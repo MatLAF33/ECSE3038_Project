@@ -1,3 +1,5 @@
+from pydoc import doc
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -148,6 +150,7 @@ async def create_sensor_data(sensor_data: SensorData):
 
     #add timestamp to doc before saving to db
     doc["datetime"] = datetime.now(ZoneInfo("America/Jamaica")).isoformat(timespec="seconds") #TIMESTAMP WITH EXLCUDING MICROSEONDS (TIMESPEC=SECONDS)
+    doc["server_version"] = "JA_TIME_FIX_1"
 
     #sensor data in db
     await db["sensor_data"].insert_one(doc)
@@ -168,12 +171,8 @@ async def get_state():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No settings found")
     
     # Get latest sensor reading from db
-   # sensor_data = await db["sensor_data"].find_one({},{"_id": 0}, sort=[("datetime", -1)]) # sort=[("datetime", -1) newest datetime first
-    sensor_data = await db["sensor_data"].find_one(
-        {},
-        {"_id": 0},
-        sort=[("_id", -1)])
-    
+    sensor_data = await db["sensor_data"].find_one({},{"_id": 0}, sort=[("datetime", -1)]) # sort=[("datetime", -1) newest datetime first
+
     if not sensor_data:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No sensor data found")
 
