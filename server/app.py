@@ -6,6 +6,7 @@ from dotenv import dotenv_values
 from datetime import datetime, timedelta
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from zoneinfo import ZoneInfo # force to use JA time zone
 
 config = dotenv_values(".env")
 
@@ -182,7 +183,8 @@ async def get_state():
     # Light logic
     light_state = False
 
-    current_time = datetime.now().strftime("%H:%M:%S")
+    # current_time = datetime.now().strftime("%H:%M:%S")
+    current_time = datetime.now(ZoneInfo("America/Jamaica")).strftime("%H:%M:%S") # force to use Ja time render use a different tiem zone
 
     if current_time >= settings["user_light"] and current_time <= settings["light_time_off"] and sensor_data["presence"] == True:
         light_state = True
