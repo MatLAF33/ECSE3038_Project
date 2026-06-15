@@ -168,9 +168,12 @@ async def get_state():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No settings found")
     
     # Get latest sensor reading from db
-    sensor_data = await db["sensor_data"].find_one({},{"_id": 0}, sort=[("datetime", -1)] # sort=[("datetime", -1) newest datetime first
-    )
-
+   # sensor_data = await db["sensor_data"].find_one({},{"_id": 0}, sort=[("datetime", -1)]) # sort=[("datetime", -1) newest datetime first
+    sensor_data = await db["sensor_data"].find_one(
+        {},
+        {"_id": 0},
+        sort=[("_id", -1)])
+    
     if not sensor_data:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No sensor data found")
 
