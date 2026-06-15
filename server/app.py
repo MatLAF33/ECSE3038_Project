@@ -15,7 +15,7 @@ config = dotenv_values(".env")
 #MONGO_URI = config["MONGO_URI"]
 MONGO_URI = os.getenv("MONGO_URI") or config["MONGO_URI"] #for render 
 client = AsyncIOMotorClient(MONGO_URI)
-db = client["IoT_Project_db"]
+db = client["IoT_Project_db_final"]
 
 app = FastAPI()
 app.add_middleware(
