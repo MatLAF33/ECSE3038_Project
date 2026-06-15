@@ -5,11 +5,12 @@ from pydantic import BaseModel
 from dotenv import dotenv_values
 from datetime import datetime, timedelta
 from fastapi.middleware.cors import CORSMiddleware
-
+import os
 
 config = dotenv_values(".env")
 
-MONGO_URI = config["MONGO_URI"]
+#MONGO_URI = config["MONGO_URI"]
+MONGO_URI = os.getenv("MONGO_URI") or config["MONGO_URI"] #for render 
 client = AsyncIOMotorClient(MONGO_URI)
 db = client["IoT_Project_db"]
 
