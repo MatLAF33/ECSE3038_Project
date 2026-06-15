@@ -150,7 +150,7 @@ async def create_sensor_data(sensor_data: SensorData):
 
     #add timestamp to doc before saving to db
     doc["datetime"] = datetime.now(ZoneInfo("America/Jamaica")).isoformat(timespec="seconds") #TIMESTAMP WITH EXLCUDING MICROSEONDS (TIMESPEC=SECONDS)
-    doc["server_version"] = "JA_TIME_FIX_1"
+    #doc["server_version"] = "JA_TIME_FIX_1" #test
 
     #sensor data in db
     await db["sensor_data"].insert_one(doc)
